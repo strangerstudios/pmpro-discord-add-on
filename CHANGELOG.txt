@@ -1,0 +1,12 @@
+= 1.0.5 =
+* Fixed JS error related to the TABS plugin.
+
+= 1.0.4 =
+* Fixed CSS conflict with other discord plugins.
+
+= 1.0.3 =
+* Fixed assets folder 
+
+= 1.0.2 =
+* Added shortcode [discord_connect_button]
+* Secure the log file by adding UUID4 prefix in the file name during plugin activation.
