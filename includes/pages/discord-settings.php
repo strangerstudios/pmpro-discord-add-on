@@ -42,7 +42,7 @@ $ets_pmpro_discord_guild_id     = sanitize_text_field( trim( get_option( 'ets_pm
 		<?php echo __( 'Save Settings', 'pmpro-discord-add-on' ); ?>
 	  </button>
 	  <?php if ( get_option( 'ets_pmpro_discord_client_id' ) ) : ?>
-		<a href="?action=discord-connectToBot" class="ets-btn btn-connect-to-bot" id="connect-discord-bot"><?php echo __( 'Connect your Bot', 'pmpro-discord-add-on' ); ?> <i class='fab fa-discord'></i></a>
+		<a href="?action=discord-connectToBot" class="ets-btn pmpro-btn-connect-to-bot" id="pmpro-connect-discord-bot"><?php echo __( 'Connect your Bot', 'pmpro-discord-add-on' ); ?> <i class='fab fa-discord'></i></a>
 	  <?php endif; ?>
 	</p>
 </form>

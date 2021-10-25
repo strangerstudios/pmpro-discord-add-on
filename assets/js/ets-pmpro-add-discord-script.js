@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
 	if (etsPmproParams.is_admin) {
-		if(window.location.href.indexOf("skeletabsPanel") == -1) {
+		if(window.location.href.indexOf("ets_pmpro_") == -1) {
 			jQuery("#skeletabsTab1").trigger("click");
 		}
 		/*Load all roles from discord server*/
@@ -10,19 +10,19 @@ jQuery(document).ready(function ($) {
 			url: etsPmproParams.admin_ajax,
 			data: { 'action': 'ets_pmpro_discord_load_discord_roles', 'ets_discord_nonce': etsPmproParams.ets_discord_nonce, },
 			beforeSend: function () {
-				$(".discord-roles .spinner").addClass("is-active");
+				$(".pmpro-discord-roles .spinner").addClass("is-active");
 				$(".initialtab.spinner").addClass("is-active");
 			},
 			success: function (response) {
 				if (response != null && response.hasOwnProperty('code') && response.code == 50001 && response.message == 'Missing Access') {
-					$(".btn-connect-to-bot").show();
+					$(".pmpro-btn-connect-to-bot").show();
 				} else if (response == null || response.message == '401: Unauthorized' || response.hasOwnProperty('code') || response == 0) {
-					$("#connect-discord-bot").show().html("Error: Please check all details are correct").addClass('error-bk');
+					$("#pmpro-connect-discord-bot").show().html("Error: Please check all details are correct").addClass('error-bk');
 				} else {
 					if ($('.ets-tabs button[data-identity="level-mapping"]').length) {
 						$('.ets-tabs button[data-identity="level-mapping"]').show();
 					}
-					$("#connect-discord-bot").show().html("Bot Connected <i class='fab fa-discord'></i>").addClass('not-active');
+					$("#pmpro-connect-discord-bot").show().html("Bot Connected <i class='fab fa-discord'></i>").addClass('not-active');
 
 					var activeTab = localStorage.getItem('activeTab');
 					if ($('.ets-tabs button[data-identity="level-mapping"]').length == 0 && activeTab == 'level-mapping') {
@@ -37,47 +37,47 @@ jQuery(document).ready(function ($) {
 						}
 
 						if (key != 'previous_mapping' && isbot == false && val.name != '@everyone') {
-							$('.discord-roles').append('<div class="makeMeDraggable" style="background-color:#'+val.color.toString(16)+'" data-role_id="' + val.id + '" >' + val.name + '</div>');
-							$('#defaultRole').append('<option value="' + val.id + '" >' + val.name + '</option>');
+							$('.pmpro-discord-roles').append('<div class="makeMeDraggable" style="background-color:#'+val.color.toString(16)+'" data-pmpro_role_id="' + val.id + '" >' + val.name + '</div>');
+							$('#pmpro-defaultRole').append('<option value="' + val.id + '" >' + val.name + '</option>');
 							makeDrag($('.makeMeDraggable'));
 						}
 					});
 					var defaultRole = $('#selected_default_role').val();
 					if (defaultRole) {
-						$('#defaultRole option[value=' + defaultRole + ']').prop('selected', true);
+						$('#pmpro-defaultRole option[value=' + defaultRole + ']').prop('selected', true);
 					}
 
 					if (response.previous_mapping) {
 						var mapjson = response.previous_mapping;
 					} else {
-						var mapjson = localStorage.getItem('mappingjson');
+						var mapjson = localStorage.getItem('pmpro_mappingjson');
 					}
 
-					$("#maaping_json_val").html(mapjson);
+					$("#pmpro_maaping_json_val").html(mapjson);
 					$.each(JSON.parse(mapjson), function (key, val) {
 						var arrayofkey = key.split('id_');
-						$('*[data-level_id="' + arrayofkey[1] + '"]').append($('*[data-role_id="' + val + '"]')).attr('data-drop-role_id', val).find('span').css({ 'order': '2' });
-						if (jQuery('*[data-level_id="' + arrayofkey[1] + '"]').find('.makeMeDraggable').length >= 1) {
-							$('*[data-level_id="' + arrayofkey[1] + '"]').droppable("destroy");
+						$('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').append($('*[data-pmpro_role_id="' + val + '"]')).attr('data-drop-pmpro_role_id', val).find('span').css({ 'order': '2' });
+						if (jQuery('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').find('.makeMeDraggable').length >= 1) {
+							$('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').droppable("destroy");
 						}
-						$('*[data-role_id="' + val + '"]').css({ 'width': '100%', 'left': '0', 'top': '0', 'margin-bottom': '0px', 'order': '1' }).attr('data-level_id', arrayofkey[1]);
+						$('*[data-pmpro_role_id="' + val + '"]').css({ 'width': '100%', 'left': '0', 'top': '0', 'margin-bottom': '0px', 'order': '1' }).attr('data-pmpro_level_id', arrayofkey[1]);
 					});
 				}
 
 			},
 			error: function (response) {
-				$("#connect-discord-bot").show().html("Error: Please check all details are correct").addClass('error-bk');
+				$("#pmpro-connect-discord-bot").show().html("Error: Please check all details are correct").addClass('error-bk');
 				console.error(response);
 			},
 			complete: function () {
-				$(".discord-roles .spinner").removeClass("is-active").css({ "float": "right" });
+				$(".pmpro-discord-roles .spinner").removeClass("is-active").css({ "float": "right" });
 				$("#skeletabsTab1 .spinner").removeClass("is-active").css({ "float": "right", "display": "none" });
 			}
 		});
 
 
 		/*Clear log log call-back*/
-		$('#clrbtn').click(function (e) {
+		$('#pmpro-clrbtn').click(function (e) {
 			e.preventDefault();
 			$.ajax({
 				url: etsPmproParams.admin_ajax,
@@ -105,8 +105,8 @@ jQuery(document).ready(function ($) {
 
 		/*Flush settings from local storage*/
 		$("#revertMapping").on('click', function () {
-			localStorage.removeItem('mapArray');
-			localStorage.removeItem('mappingjson');
+			localStorage.removeItem('pmpro_mapArray');
+			localStorage.removeItem('pmpro_mappingjson');
 			window.location.href = window.location.href;
 		});
 
@@ -116,7 +116,7 @@ jQuery(document).ready(function ($) {
 				drop: handleDropEvent,
 				hoverClass: 'hoverActive',
 			});
-			$('.discord-roles-col').droppable({
+			$('.pmpro-discord-roles-col').droppable({
 				drop: handlePreviousDropEvent,
 				hoverClass: 'hoverActive',
 			});
@@ -136,17 +136,17 @@ jQuery(document).ready(function ($) {
 		function handlePreviousDropEvent(event, ui) {
 			var draggable = ui.draggable;
 			$(this).append(draggable);
-			$('*[data-drop-role_id="' + draggable.data('role_id') + '"]').droppable({
+			$('*[data-drop-pmpro_role_id="' + draggable.data('pmpro_role_id') + '"]').droppable({
 				drop: handleDropEvent,
 				hoverClass: 'hoverActive',
 			});
-			$('*[data-drop-role_id="' + draggable.data('role_id') + '"]').attr('data-drop-role_id', '');
+			$('*[data-drop-pmpro_role_id="' + draggable.data('pmpro_role_id') + '"]').attr('data-drop-pmpro_role_id', '');
 
-			var oldItems = JSON.parse(localStorage.getItem('mapArray')) || [];
+			var oldItems = JSON.parse(localStorage.getItem('pmpro_mapArray')) || [];
 			$.each(oldItems, function (key, val) {
 				if (val) {
 					var arrayofval = val.split(',');
-					if (arrayofval[0] == 'level_id_' + draggable.data('level_id') || arrayofval[1] == draggable.data('role_id')) {
+					if (arrayofval[0] == 'pmpro_level_id_' + draggable.data('pmpro_level_id') || arrayofval[1] == draggable.data('pmpro_role_id')) {
 						delete oldItems[key];
 					}
 				}
@@ -155,20 +155,20 @@ jQuery(document).ready(function ($) {
 			$.each(oldItems, function (key, val) {
 				if (val) {
 					var arrayofval = val.split(',');
-					if (arrayofval[0] != 'level_id_' + draggable.data('level_id') || arrayofval[1] != draggable.data('role_id')) {
+					if (arrayofval[0] != 'pmpro_level_id_' + draggable.data('pmpro_level_id') || arrayofval[1] != draggable.data('pmpro_role_id')) {
 						jsonStart = jsonStart + '"' + arrayofval[0] + '":' + '"' + arrayofval[1] + '",';
 					}
 				}
 			});
-			localStorage.setItem('mapArray', JSON.stringify(oldItems));
+			localStorage.setItem('pmpro_mapArray', JSON.stringify(oldItems));
 			var lastChar = jsonStart.slice(-1);
 			if (lastChar == ',') {
 				jsonStart = jsonStart.slice(0, -1);
 			}
 
-			var mappingjson = jsonStart + '}';
-			$("#maaping_json_val").html(mappingjson);
-			localStorage.setItem('mappingjson', mappingjson);
+			var pmpro_mappingjson = jsonStart + '}';
+			$("#pmpro_maaping_json_val").html(pmpro_mappingjson);
+			localStorage.setItem('pmpro_mappingjson', pmpro_mappingjson);
 			draggable.css({ 'width': '100%', 'left': '0', 'top': '0', 'margin-bottom': '10px' });
 		}
 
@@ -176,46 +176,46 @@ jQuery(document).ready(function ($) {
 		function handleDropEvent(event, ui) {
 			var draggable = ui.draggable;
 			var newItem = [];
-			$('*[data-drop-role_id="' + draggable.data('role_id') + '"]').droppable({
+			$('*[data-drop-pmpro_role_id="' + draggable.data('pmpro_role_id') + '"]').droppable({
 				drop: handleDropEvent,
 				hoverClass: 'hoverActive',
 			});
-			$('*[data-drop-role_id="' + draggable.data('role_id') + '"]').attr('data-drop-role_id', '');
-			if ($(this).data('drop-role_id') != draggable.data('role_id')) {
-				var oldItems = JSON.parse(localStorage.getItem('mapArray')) || [];
-				$(this).attr('data-drop-role_id', draggable.data('role_id'));
-				draggable.attr('data-level_id', $(this).data('level_id'));
+			$('*[data-drop-pmpro_role_id="' + draggable.data('pmpro_role_id') + '"]').attr('data-drop-pmpro_role_id', '');
+			if ($(this).data('drop-pmpro_role_id') != draggable.data('pmpro_role_id')) {
+				var oldItems = JSON.parse(localStorage.getItem('pmpro_mapArray')) || [];
+				$(this).attr('data-drop-pmpro_role_id', draggable.data('pmpro_role_id'));
+				draggable.attr('data-pmpro_level_id', $(this).data('pmpro_level_id'));
 
 				$.each(oldItems, function (key, val) {
 					if (val) {
 						var arrayofval = val.split(',');
-						if (arrayofval[0] == 'level_id_' + $(this).data('level_id') || arrayofval[1] == draggable.data('role_id')) {
+						if (arrayofval[0] == 'pmpro_level_id_' + $(this).data('pmpro_level_id') || arrayofval[1] == draggable.data('pmpro_role_id')) {
 							delete oldItems[key];
 						}
 					}
 				});
 
-				var newkey = 'level_id_' + $(this).data('level_id');
-				oldItems.push(newkey + ',' + draggable.data('role_id'));
+				var newkey = 'pmpro_level_id_' + $(this).data('pmpro_level_id');
+				oldItems.push(newkey + ',' + draggable.data('pmpro_role_id'));
 				var jsonStart = "{";
 				$.each(oldItems, function (key, val) {
 					if (val) {
 						var arrayofval = val.split(',');
-						if (arrayofval[0] == 'level_id_' + $(this).data('level_id') || arrayofval[1] != draggable.data('role_id') && arrayofval[0] != 'level_id_' + $(this).data('level_id') || arrayofval[1] == draggable.data('role_id')) {
+						if (arrayofval[0] == 'pmpro_level_id_' + $(this).data('pmpro_level_id') || arrayofval[1] != draggable.data('pmpro_role_id') && arrayofval[0] != 'pmpro_level_id_' + $(this).data('pmpro_level_id') || arrayofval[1] == draggable.data('pmpro_role_id')) {
 							jsonStart = jsonStart + '"' + arrayofval[0] + '":' + '"' + arrayofval[1] + '",';
 						}
 					}
 				});
 
-				localStorage.setItem('mapArray', JSON.stringify(oldItems));
+				localStorage.setItem('pmpro_mapArray', JSON.stringify(oldItems));
 				var lastChar = jsonStart.slice(-1);
 				if (lastChar == ',') {
 					jsonStart = jsonStart.slice(0, -1);
 				}
 
-				var mappingjson = jsonStart + '}';
-				localStorage.setItem('mappingjson', mappingjson);
-				$("#maaping_json_val").html(mappingjson);
+				var pmpro_mappingjson = jsonStart + '}';
+				localStorage.setItem('pmpro_mappingjson', pmpro_mappingjson);
+				$("#pmpro_maaping_json_val").html(pmpro_mappingjson);
 			}
 
 			$(this).append(ui.draggable);
@@ -229,7 +229,7 @@ jQuery(document).ready(function ($) {
 	}
 
 	/*Call-back on disconnect from discord*/
-	$('#disconnect-discord').on('click', function (e) {
+	$('#pmpro-disconnect-discord').on('click', function (e) {
 		e.preventDefault();
 		var userId = $(this).data('user-id');
 		$.ajax({
@@ -276,7 +276,9 @@ jQuery(document).ready(function ($) {
 		});
 	});
 });
-/*Tab options*/
-jQuery.skeletabs.setDefaults({
-	keyboard: false,
-});
+if (etsPmproParams.is_admin) {
+	/*Tab options*/
+	jQuery.skeletabs.setDefaults({
+		keyboard: false,
+	});
+}

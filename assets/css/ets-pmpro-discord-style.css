@@ -82,7 +82,7 @@
   opacity: 1;
   text-transform: uppercase;
 }
-.ets-btn.btn-connect-to-bot{
+.ets-btn.pmpro-btn-connect-to-bot{
   font-weight:normal;
   display: none;
   text-transform: none;
@@ -104,23 +104,23 @@
   height: 400px;
   overflow: scroll;
 }
-.btn-connect{
+.pmpro-btn-connect{
   background-color: #77A02E;
 }
-.btn-connect-to-bot{
+.pmpro-btn-connect-to-bot{
   background-color: #FF0000;
 }
-.btn-disconnect{
+.pmpro-btn-disconnect{
   background-color:#FF0000;
 }
-.clrbtndiv{
+.pmpro-clrbtndiv{
     max-width: 230px;
     display: flex;
 }
-.clrbtndiv .form-group{
+.pmpro-clrbtndiv .form-group{
   display: flex;
 }
-.clrbtndiv .form-group .spinner{
+.pmpro-clrbtndiv .form-group .spinner{
   margin: 10px 10px 0;
 }
 .ets-bg-red{
@@ -131,9 +131,12 @@
   background-color: #77A02E !important;
   color: #ffffff;
 }
-.ets-bg-download{
+.ets-pmpro-bg-download{
   background-color: #2CA450 !important;
   color: #ffffff;
+}
+.ets-submit.ets-pmpro-bg-download{
+  margin: 0 2px;
 }
 .wp-core-ui .notice.is-dismissible.support-success-msg{
   position: fixed;
@@ -373,7 +376,7 @@ a{
   text-align: center;
   min-height: 300px;
 }
-.discord-roles-col{
+.pmpro-discord-roles-col{
   border:2px dashed transparent;
   transition:ease 0.3s;
 }
@@ -394,7 +397,7 @@ a{
 .ets-is-active{
   visibility: visible;
 }
-.discord-roles .spinner, .initialtab.spinner{
+.pmpro-discord-roles .spinner, .initialtab.spinner{
   float: none;
 }
 .hoverActive{
@@ -433,7 +436,7 @@ div.mapping-json{
   text-align: center;
   margin-top: 10px;
 }
-#maaping_json_val{
+#pmpro_maaping_json_val{
   width: 50%;
   display: none;
 }
@@ -454,7 +457,7 @@ div.mapping-json{
     font-size:2em;
     vertical-align:middle;
 }
-.discord-roles .spinner,.initialtab.spinner{
+.pmpro-discord-roles .spinner,.initialtab.spinner{
   display: inline-block;
 }
 .spinner{

@@ -388,8 +388,8 @@ class PMPro_Discord_API {
 		$curr_level_id                     = sanitize_text_field( trim( ets_pmpro_discord_get_current_level_id( $user_id ) ) );
 		$ets_pmpro_discord_send_welcome_dm = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_send_welcome_dm' ) ) );
 
-		if ( is_array( $ets_pmpor_discord_role_mapping ) && array_key_exists( 'level_id_' . $curr_level_id, $ets_pmpor_discord_role_mapping ) ) {
-			$discord_role = sanitize_text_field( trim( $ets_pmpor_discord_role_mapping[ 'level_id_' . $curr_level_id ] ) );
+		if ( is_array( $ets_pmpor_discord_role_mapping ) && array_key_exists( 'pmpro_level_id_' . $curr_level_id, $ets_pmpor_discord_role_mapping ) ) {
+			$discord_role = sanitize_text_field( trim( $ets_pmpor_discord_role_mapping[ 'pmpro_level_id_' . $curr_level_id ] ) );
 		} elseif ( $discord_role = '' && $default_role ) {
 			$discord_role = $default_role;
 		}
@@ -839,8 +839,8 @@ class PMPro_Discord_API {
 			}
 			if ( $curr_level_id !== null ) {
 				// Assign role which is mapped to the mmebership level.
-				if ( is_array( $ets_pmpor_discord_role_mapping ) && array_key_exists( 'level_id_' . $curr_level_id, $ets_pmpor_discord_role_mapping ) ) {
-					$mapped_role_id = sanitize_text_field( trim( $ets_pmpor_discord_role_mapping[ 'level_id_' . $curr_level_id ] ) );
+				if ( is_array( $ets_pmpor_discord_role_mapping ) && array_key_exists( 'pmpro_level_id_' . $curr_level_id, $ets_pmpor_discord_role_mapping ) ) {
+					$mapped_role_id = sanitize_text_field( trim( $ets_pmpor_discord_role_mapping[ 'pmpro_level_id_' . $curr_level_id ] ) );
 					if ( $mapped_role_id && $expired_level_id == false && $cancel_level_id == false ) {
 						$this->put_discord_role_api( $user_id, $mapped_role_id, $is_schedule );
 						update_user_meta( $user_id, '_ets_pmpro_discord_role_id', $mapped_role_id );

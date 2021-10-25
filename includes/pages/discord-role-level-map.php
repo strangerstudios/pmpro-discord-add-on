@@ -12,10 +12,10 @@ $allow_none_member_s = sanitize_text_field( trim( get_option( 'ets_pmpro_allow_n
   <p><i class='fas fa-info'></i> <?php echo __( 'Note: Inactive levels will not display', 'pmpro-discord-add-on' ); ?></p>
 </div>
 <div class="row-container">
-  <div class="ets-column discord-roles-col">
+  <div class="ets-column pmpro-discord-roles-col">
 	<h2><?php echo __( 'Discord Roles', 'pmpro-discord-add-on' ); ?></h2>
 	<hr>
-	<div class="discord-roles">
+	<div class="pmpro-discord-roles">
 	  <span class="spinner"></span>
 	</div>
   </div>
@@ -27,7 +27,7 @@ $allow_none_member_s = sanitize_text_field( trim( get_option( 'ets_pmpro_allow_n
 	foreach ( $pmpro_levels as $key => $value ) {
 		if ( $value->allow_signups != 0 ) :
 			?>
-		  <div class="makeMeDroppable" data-level_id="<?php echo esc_attr($value->id); ?>" ><span><?php echo esc_html($value->name); ?></span></div>
+		  <div class="makeMeDroppable" data-pmpro_level_id="<?php echo esc_attr($value->id); ?>" ><span><?php echo esc_html($value->name); ?></span></div>
 			<?php
 		endif;
 	}
@@ -40,11 +40,11 @@ $allow_none_member_s = sanitize_text_field( trim( get_option( 'ets_pmpro_allow_n
   <table class="form-table" role="presentation">
 	<tbody>
 	  <tr>
-		<th scope="row"><label for="defaultRole"><?php echo __( 'Default Role', 'pmpro-discord-add-on' ); ?></label></th>
+		<th scope="row"><label for="pmpro-defaultRole"><?php echo __( 'Default Role', 'pmpro-discord-add-on' ); ?></label></th>
 		<td>
 		  <?php wp_nonce_field( 'discord_role_mappings_nonce', 'ets_pmpor_discord_role_mappings_nonce' ); ?>
 		  <input type="hidden" id="selected_default_role" value="<?php echo esc_attr( $default_role ); ?>">
-		  <select id="defaultRole" name="defaultRole">
+		  <select id="pmpro-defaultRole" name="pmpro_defaultRole">
 			<option value="none"><?php echo __( '-None-', 'pmpro-discord-add-on' ); ?></option>
 		  </select>
 		  <p class="description"><?php echo __( 'This Role will be assigned to all level members', 'pmpro-discord-add-on' ); ?></p>
@@ -74,7 +74,7 @@ $allow_none_member_s = sanitize_text_field( trim( get_option( 'ets_pmpro_allow_n
   </table>
 	<br>
   <div class="mapping-json">
-	<textarea id="maaping_json_val" name="ets_pmpor_discord_role_mapping">
+	<textarea id="pmpro_maaping_json_val" name="ets_pmpor_discord_role_mapping">
 	<?php
 	if ( isset( $ets_discord_roles ) ) {
 		echo stripslashes( esc_html( $ets_discord_roles ));}

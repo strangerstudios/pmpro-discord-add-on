@@ -7,11 +7,6 @@
 
 This add-on enables connecting your PMPRO enabled website to your discord server. Now you can add/remove PMPRO members directly to your discord server, assign roles according to the membership levels, unassign roles when member expire or cancel, change role when member change membership.
 
-👉 Please please please give us your love, please always ask in support if you are stuck in setting up the plugin or facing an issue we will prmptly help you sort out any issue you may be facing.
-👉 If you love this plugin, please rate us 5 star rating.
-👉 We welcome donations to keep us developing awesome free plugins, our Paypal is: business@expresstechsoftwares.com
-
-
 # [Step By Step guide on how to set-up plugin](https://www.expresstechsoftwares.com/step-by-step-documentation-guide-on-how-to-connect-pmpro-and-discord-server-using-discord-addon/)
 
 
@@ -57,6 +52,7 @@ This add-on enables connecting your PMPRO enabled website to your discord server
 - Send a Direct message to discord members when their membership has expired. (Only work when allow none member is set to YES and Direct Message advanced setting is set ENABLED)
 - Send a Direct message to discord members when their membership is cancelled. (Only work when allow none member is set to YES and Direct Message advanced setting is set ENABLED)
 - Send membership expiration warnings Direct Message when membership is about to expire (Default 7 days before)
+- Short code [discord_connect_button] can be used on any page to display connect/disconnect button.
 
 ## Solution of Missing Access Error
 - Inside the log tab you will see "50001:Missing Access", which is happening because the new BOT role need to the TOP priroty among the other roles.

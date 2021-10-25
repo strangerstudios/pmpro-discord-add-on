@@ -33,9 +33,10 @@ class PMPro_Discord_Logs {
 			exit();
 		}
 		try {
-			$file_name = $this::$log_file_name;
-			if ( fopen( ETS_PMPRO_DISCORD_PATH . $file_name, 'w' ) ) {
-				$myfile = fopen( ETS_PMPRO_DISCORD_PATH . $file_name, 'w' );
+			$uuid      = get_option( 'ets_pmpro_discord_uuid_file_name' );
+			$file_name = $uuid . $this::$log_file_name;
+			if ( fopen( WP_CONTENT_DIR . '/' . $file_name, 'w' ) ) {
+				$myfile = fopen( WP_CONTENT_DIR . '/' . $file_name, 'w' );
 				$txt    = current_time( 'mysql' ) . " => Clear logs Successfully\n";
 				fwrite( $myfile, $txt );
 				fclose( $myfile );
@@ -63,26 +64,27 @@ class PMPro_Discord_Logs {
 	 * @return None
 	 */
 	static function write_api_response_logs( $response_arr, $user_id, $backtrace_arr = array() ) {
-    
+
 		$error        = current_time( 'mysql' );
 		$user_details = '';
 		if ( $user_id ) {
 			$user_details = '::User Id:' . $user_id;
 		}
 		$log_api_response = get_option( 'ets_pmpro_discord_log_api_response' );
-		$log_file_name    = self::$log_file_name;
+		$uuid             = get_option( 'ets_pmpro_discord_uuid_file_name' );
+		$log_file_name    = $uuid . self::$log_file_name;
 		if ( is_array( $response_arr ) && array_key_exists( 'code', $response_arr ) ) {
 			$error .= '==>File:' . $backtrace_arr['file'] . $user_details . '::Line:' . $backtrace_arr['line'] . '::Function:' . $backtrace_arr['function'] . '::' . $response_arr['code'] . ':' . $response_arr['message'];
 			if ( $response_arr['code'] == '50001' ) {
 				$error .= '<br><b> Solution: The BOT role need to the TOP priority among the other roles. discord.com > Server Settings > Roles > Drag the BOT role to the TOP priority</b>';
 			}
-			file_put_contents( ETS_PMPRO_DISCORD_PATH . $log_file_name, $error . PHP_EOL, FILE_APPEND | LOCK_EX );
+			file_put_contents( WP_CONTENT_DIR . '/' . $log_file_name, $error . PHP_EOL, FILE_APPEND | LOCK_EX );
 		} elseif ( is_array( $response_arr ) && array_key_exists( 'error', $response_arr ) ) {
 			$error .= '==>File:' . $backtrace_arr['file'] . $user_details . '::Line:' . $backtrace_arr['line'] . '::Function:' . $backtrace_arr['function'] . '::' . $response_arr['error'];
-			file_put_contents( ETS_PMPRO_DISCORD_PATH . $log_file_name, $error . PHP_EOL, FILE_APPEND | LOCK_EX );
+			file_put_contents( WP_CONTENT_DIR . '/' . $log_file_name, $error . PHP_EOL, FILE_APPEND | LOCK_EX );
 		} elseif ( $log_api_response == true ) {
 			$error .= json_encode( $response_arr ) . '::' . $user_id;
-			file_put_contents( ETS_PMPRO_DISCORD_PATH . $log_file_name, $error . PHP_EOL, FILE_APPEND | LOCK_EX );
+			file_put_contents( WP_CONTENT_DIR . '/' . $log_file_name, $error . PHP_EOL, FILE_APPEND | LOCK_EX );
 		}
 
 	}
