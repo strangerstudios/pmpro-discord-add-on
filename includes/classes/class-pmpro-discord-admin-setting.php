@@ -42,7 +42,6 @@ class Ets_Pmpro_Admin_Setting {
 
 		add_filter( 'action_scheduler_queue_runner_concurrent_batches', array( $this, 'ets_pmpro_discord_concurrent_batches' ) );
 	}
-
 	/**
 	 * set action scheuduler concurrent batches number
 	 *
@@ -80,6 +79,9 @@ class Ets_Pmpro_Admin_Setting {
 			wp_send_json_error( 'Unauthorized user', 401 );
 			exit();
 		}
+		wp_enqueue_style( 'ets_pmpro_add_discord_style' );
+		wp_enqueue_script( 'ets_fab_icon_script' );
+		wp_enqueue_script( 'ets_pmpro_add_discord_script' );
 		$user_id = sanitize_text_field( trim( get_current_user_id() ) );
 
 		$access_token = sanitize_text_field( trim( get_user_meta( $user_id, '_ets_pmpro_discord_access_token', true ) ) );
@@ -102,30 +104,27 @@ class Ets_Pmpro_Admin_Setting {
 		if ( $default_role != 'none' && is_array( $all_roles ) && array_key_exists( $default_role, $all_roles ) ) {
 			$default_role_name = $all_roles[ $default_role ];
 		}
+		$pmpro_connecttodiscord_btn = '';
 		if ( Check_saved_settings_status() ) {
 			if ( $access_token ) {
-				?>
-				<label class="ets-connection-lbl"><?php echo __( 'Discord connection', 'pmpro-discord-add-on' ); ?></label>
-				<a href="#" class="ets-btn pmpro-btn-disconnect" id="pmpro-disconnect-discord" data-user-id="<?php echo esc_attr( $user_id ); ?>"><?php echo __( 'Disconnect From Discord ', 'pmpro-discord-add-on' ); ?><i class='fab fa-discord'></i></a>
-				<span class="ets-spinner"></span>
-				<?php
+				
+				$pmpro_connecttodiscord_btn .= '<label class="ets-connection-lbl">'. esc_html__( 'Discord connection', 'pmpro-discord-add-on' ) .'</label>';
+				$pmpro_connecttodiscord_btn .= '<a href="#" class="ets-btn pmpro-btn-disconnect" id="pmpro-disconnect-discord" data-user-id="'.esc_attr( $user_id ).'">'. esc_html__( 'Disconnect From Discord ', 'pmpro-discord-add-on' ) .'<i class="fab fa-discord"></i></a>';
+				$pmpro_connecttodiscord_btn .= '<span class="ets-spinner"></span>';
 			} elseif ( pmpro_hasMembershipLevel() || $allow_none_member == 'yes' ) {
-				?>
-				<label class="ets-connection-lbl"><?php echo __( 'Discord connection', 'pmpro-discord-add-on' ); ?></label>
-				<a href="?action=discord-login" class="pmpro-btn-connect ets-btn" ><?php echo __( 'Connect To Discord', 'pmpro-discord-add-on' ); ?> <i class='fab fa-discord'></i></a>
-				<?php if ( $mapped_role_name ) { ?>
-					<p class="ets_assigned_role">
-					<?php
-					echo __( 'Following Roles will be assigned to you in Discord: ', 'pmpro-discord-add-on' );
-					echo esc_html( $mapped_role_name );
+				$pmpro_connecttodiscord_btn .= '<label class="ets-connection-lbl">'. esc_html__( 'Discord connection', 'pmpro-discord-add-on' ) .'</label>';
+				$pmpro_connecttodiscord_btn .= '<a href="?action=discord-login" class="pmpro-btn-connect ets-btn" >'. esc_html__( 'Connect To Discord', 'pmpro-discord-add-on' ) .'<i class="fab fa-discord"></i></a>';
+				if ( $mapped_role_name ) {
+					$pmpro_connecttodiscord_btn .= '<p class="ets_assigned_role">'. esc_html__( 'Following Roles will be assigned to you in Discord: ', 'pmpro-discord-add-on' );
+					$pmpro_connecttodiscord_btn .= esc_html( $mapped_role_name );
 					if ( $default_role_name ) {
-						echo ', ' . esc_html( $default_role_name ); }
-					?>
-					 </p>
-				<?php } ?>
-				<?php
+						$pmpro_connecttodiscord_btn .= ', ' . esc_html( $default_role_name ); 
+					}
+					$pmpro_connecttodiscord_btn .= '</p>';
+				}
 			}
 		}
+		return $pmpro_connecttodiscord_btn;
 
 	}
 
@@ -217,13 +216,6 @@ class Ets_Pmpro_Admin_Setting {
 			false,
 			ETS_PMPRO_VERSION
 		);
-		wp_enqueue_style( 'ets_pmpro_add_discord_style' );
-
-		wp_register_style(
-			'ets_pmpro_font_awesome',
-			'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css'
-		);
-		wp_enqueue_style( 'ets_pmpro_font_awesome' );
 
 		wp_register_script(
 			'ets_pmpro_add_discord_script',
@@ -231,18 +223,12 @@ class Ets_Pmpro_Admin_Setting {
 			array( 'jquery' ),
 			ETS_PMPRO_VERSION
 		);
-		wp_enqueue_script( 'ets_pmpro_add_discord_script' );
 
 		wp_register_script(
 			'ets_fab_icon_script',
 			'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/js/all.min.js',
 			array( 'jquery' )
 		);
-		wp_enqueue_script( 'ets_fab_icon_script' );
-
-		wp_enqueue_script( 'jquery-ui-draggable' );
-
-		wp_enqueue_script( 'jquery-ui-droppable' );
 
 		$script_params = array(
 			'admin_ajax'        => admin_url( 'admin-ajax.php' ),
@@ -276,7 +262,6 @@ class Ets_Pmpro_Admin_Setting {
 			array( 'jquery' ),
 			ETS_PMPRO_VERSION
 		);
-		wp_enqueue_script( 'ets_pmpro_add_skeletabs_script' );
 	}
 
 	/**
@@ -314,7 +299,12 @@ class Ets_Pmpro_Admin_Setting {
 			wp_send_json_error( 'You do not have sufficient rights', 403 );
 			exit();
 		}
-
+		wp_enqueue_style( 'ets_pmpro_add_discord_style' );
+		wp_enqueue_script( 'ets_fab_icon_script' );
+		wp_enqueue_script( 'ets_pmpro_add_skeletabs_script' );
+		wp_enqueue_script( 'ets_pmpro_add_discord_script' );
+		wp_enqueue_script( 'jquery-ui-draggable' );
+		wp_enqueue_script( 'jquery-ui-droppable' );
 		if ( isset( $_GET['save_settings_msg'] ) ) {
 			?>
 				<div class="notice notice-success is-dismissible support-success-msg">
@@ -657,6 +647,8 @@ class Ets_Pmpro_Admin_Setting {
 	* @return NONE
 	*/
 	public function ets_pmpro_discord_pmpro_extra_cols_body( $colname, $user_id ) {
+		wp_enqueue_style( 'ets_pmpro_add_discord_style' );
+		wp_enqueue_script( 'ets_pmpro_add_discord_script' );
 		$access_token = sanitize_text_field( trim( get_user_meta( $user_id, '_ets_pmpro_discord_access_token', true ) ) );
 		if ( 'discord' === $colname ) {
 			if ( $access_token ) {

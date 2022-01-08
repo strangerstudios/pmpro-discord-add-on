@@ -56,11 +56,22 @@ jQuery(document).ready(function ($) {
 					$("#pmpro_maaping_json_val").html(mapjson);
 					$.each(JSON.parse(mapjson), function (key, val) {
 						var arrayofkey = key.split('id_');
-						$('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').append($('*[data-pmpro_role_id="' + val + '"]')).attr('data-drop-pmpro_role_id', val).find('span').css({ 'order': '2' });
-						if (jQuery('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').find('.makeMeDraggable').length >= 1) {
+						var preclone = $('*[data-pmpro_role_id="' + val + '"]').clone();
+						if(preclone.length>1){
+							preclone.slice(1).hide();
+						}
+						//$('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').append(preclone).attr('data-drop-pmpro_role_id', val).find('span').css({ 'order': '2' });
+						if (jQuery('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').find('*[data-pmpro_role_id="' + val + '"]').length == 0) {
+							$('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').append(preclone).attr('data-drop-pmpro_role_id', val).find('span').css({ 'order': '2' });
+						}
+						if ($('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').find('.makeMeDraggable').length >= 1) {
 							$('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').droppable("destroy");
 						}
-						$('*[data-pmpro_role_id="' + val + '"]').css({ 'width': '100%', 'left': '0', 'top': '0', 'margin-bottom': '0px', 'order': '1' }).attr('data-pmpro_level_id', arrayofkey[1]);
+						// if (jQuery('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').find('.makeMeDraggable').length >= 1) {
+						// 	$('*[data-pmpro_level_id="' + arrayofkey[1] + '"]').droppable("destroy");
+						// }
+						preclone.css({ 'width': '100%', 'left': '0', 'top': '0', 'margin-bottom': '0px', 'order': '1' }).attr('data-pmpro_level_id', arrayofkey[1]);
+						makeDrag(preclone);
 					});
 				}
 
@@ -128,13 +139,20 @@ jQuery(document).ready(function ($) {
 		function makeDrag(el) {
 			// Pass me an object, and I will make it draggable
 			el.draggable({
-				revert: "invalid"
+				revert: "invalid",
+				helper: 'clone',
+				start: function(e, ui) {
+				ui.helper.css({"width":"45%"});
+				}
 			});
 		}
 
 		/*Handel droppable event for saved mapping*/
 		function handlePreviousDropEvent(event, ui) {
 			var draggable = ui.draggable;
+			if(draggable.data('pmpro_level_id')){
+				$(ui.draggable).remove().hide();
+			}
 			$(this).append(draggable);
 			$('*[data-drop-pmpro_role_id="' + draggable.data('pmpro_role_id') + '"]').droppable({
 				drop: handleDropEvent,
@@ -146,7 +164,7 @@ jQuery(document).ready(function ($) {
 			$.each(oldItems, function (key, val) {
 				if (val) {
 					var arrayofval = val.split(',');
-					if (arrayofval[0] == 'pmpro_level_id_' + draggable.data('pmpro_level_id') || arrayofval[1] == draggable.data('pmpro_role_id')) {
+					if (arrayofval[0] == 'pmpro_level_id_' + draggable.data('pmpro_level_id') && arrayofval[1] == draggable.data('pmpro_role_id')) {
 						delete oldItems[key];
 					}
 				}
@@ -176,32 +194,36 @@ jQuery(document).ready(function ($) {
 		function handleDropEvent(event, ui) {
 			var draggable = ui.draggable;
 			var newItem = [];
-			$('*[data-drop-pmpro_role_id="' + draggable.data('pmpro_role_id') + '"]').droppable({
+			var newClone = $(ui.helper).clone();
+			if($(this).find(".makeMeDraggable").length >= 1){
+				return false;
+			}
+			$('*[data-drop-pmpro_role_id="' + newClone.data('pmpro_role_id') + '"]').droppable({
 				drop: handleDropEvent,
 				hoverClass: 'hoverActive',
 			});
-			$('*[data-drop-pmpro_role_id="' + draggable.data('pmpro_role_id') + '"]').attr('data-drop-pmpro_role_id', '');
-			if ($(this).data('drop-pmpro_role_id') != draggable.data('pmpro_role_id')) {
+			$('*[data-drop-pmpro_role_id="' + newClone.data('pmpro_role_id') + '"]').attr('data-drop-pmpro_role_id', '');
+			if ($(this).data('drop-pmpro_role_id') != newClone.data('pmpro_role_id')) {
 				var oldItems = JSON.parse(localStorage.getItem('pmpro_mapArray')) || [];
-				$(this).attr('data-drop-pmpro_role_id', draggable.data('pmpro_role_id'));
-				draggable.attr('data-pmpro_level_id', $(this).data('pmpro_level_id'));
+				$(this).attr('data-drop-pmpro_role_id', newClone.data('pmpro_role_id'));
+				newClone.attr('data-pmpro_level_id', $(this).data('pmpro_level_id'));
 
 				$.each(oldItems, function (key, val) {
 					if (val) {
 						var arrayofval = val.split(',');
-						if (arrayofval[0] == 'pmpro_level_id_' + $(this).data('pmpro_level_id') || arrayofval[1] == draggable.data('pmpro_role_id')) {
+						if (arrayofval[0] == 'pmpro_level_id_' + $(this).data('pmpro_level_id')) {
 							delete oldItems[key];
 						}
 					}
 				});
 
 				var newkey = 'pmpro_level_id_' + $(this).data('pmpro_level_id');
-				oldItems.push(newkey + ',' + draggable.data('pmpro_role_id'));
+				oldItems.push(newkey + ',' + newClone.data('pmpro_role_id'));
 				var jsonStart = "{";
 				$.each(oldItems, function (key, val) {
 					if (val) {
 						var arrayofval = val.split(',');
-						if (arrayofval[0] == 'pmpro_level_id_' + $(this).data('pmpro_level_id') || arrayofval[1] != draggable.data('pmpro_role_id') && arrayofval[0] != 'pmpro_level_id_' + $(this).data('pmpro_level_id') || arrayofval[1] == draggable.data('pmpro_role_id')) {
+						if (arrayofval[0] == 'pmpro_level_id_' + $(this).data('pmpro_level_id') || arrayofval[1] != newClone.data('pmpro_role_id') && arrayofval[0] != 'pmpro_level_id_' + $(this).data('pmpro_level_id') || arrayofval[1] == newClone.data('pmpro_role_id')) {
 							jsonStart = jsonStart + '"' + arrayofval[0] + '":' + '"' + arrayofval[1] + '",';
 						}
 					}
@@ -218,13 +240,15 @@ jQuery(document).ready(function ($) {
 				$("#pmpro_maaping_json_val").html(pmpro_mappingjson);
 			}
 
-			$(this).append(ui.draggable);
+			// $(this).append(ui.draggable);
+			// $(this).find('span').css({ 'order': '2' });
+			$(this).append(newClone);
 			$(this).find('span').css({ 'order': '2' });
 			if (jQuery(this).find('.makeMeDraggable').length >= 1) {
 				$(this).droppable("destroy");
 			}
-
-			draggable.css({ 'width': '100%', 'left': '0', 'top': '0', 'margin-bottom': '0px', 'order': '1' });
+			makeDrag($('.makeMeDraggable'));
+			newClone.css({ 'width': '100%', 'left': '0', 'top': '0', 'margin-bottom': '0px', 'position':'unset', 'order': '1' });
 		}
 	}
 

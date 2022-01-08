@@ -4,7 +4,7 @@ Tags: Discord, Talk, Video Chat, Hang Out, Friends, Meberships, discord role man
 Requires at least: 4.7
 Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,8 +15,7 @@ This add-on enables connecting your PMPRO enabled website to your discord server
 
 Very simple setup and intutive User interface to Manage Member Role inside Discord.
 - Please always contact support if you are facing issues in setup or see any bug.
-- The plugin took us 9 months to develop, if you like our work so please support us in keep developing awesome free plugins.
-- - Our Paypal email is business@expresstechsoftwares.com
+- If you did like the plugin, kindly support us in doing free excellent work our PayPal email is: business@expresstechsoftwares.com
 
 [youtube https://youtu.be/v7lxB_Bvlv4]
 

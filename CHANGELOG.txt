@@ -1,3 +1,10 @@
+= 1.1.0 =
+* Fixed saving shortcode [discord_connect_button] error while saving inside gutenberg editor.
+* Feature one discord role can be mapped to many PMPRO Levels.
+
+= 1.0.6 =
+* Fixed CSS/JS inclusion only where needed.
+
 = 1.0.5 =
 * Fixed JS error related to the TABS plugin.
 
