@@ -5,9 +5,11 @@ $discord_bot_token        = sanitize_text_field( trim( get_option( 'ets_pmpro_di
 $ets_pmpro_discord_redirect_url = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_redirect_url' ) ) );
 $ets_discord_roles        = sanitize_text_field( trim( get_option( 'ets_pmpor_discord_role_mapping' ) ) );
 $ets_pmpro_discord_guild_id     = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_guild_id' ) ) );
+$current_screen = ets_pmpro_discord_get_current_screen_url();
 ?>
 <form method="post" action="<?php echo get_site_url().'/wp-admin/admin-post.php' ?>">
  <input type="hidden" name="action" value="pmpro_discord_save_application_details">
+ <input type="hidden" name="referrer" value="<?php echo $current_screen; ?>" />
 	<?php wp_nonce_field( 'save_discord_settings', 'ets_discord_save_settings' ); ?>
 	<div class="ets-input-group">
 	  <label><?php echo __( 'Client ID', 'pmpro-discord-add-on' ); ?> :</label>
@@ -25,7 +27,7 @@ $ets_pmpro_discord_guild_id     = sanitize_text_field( trim( get_option( 'ets_pm
 	</div>
 	<div class="ets-input-group">
 	  <label><?php echo __( 'Bot Token', 'pmpro-discord-add-on' ); ?> :</label>
-		<input type="text" class="ets-input" name="ets_pmpro_discord_bot_token" value="<?php if ( isset( $discord_bot_token ) ) { echo esc_attr( $discord_bot_token); } ?>" required placeholder="Discord Bot Token">
+		<input type="password" class="ets-input" name="ets_pmpro_discord_bot_token" value="<?php if ( isset( $discord_bot_token ) ) { echo esc_attr( $discord_bot_token); } ?>" required placeholder="Discord Bot Token">
 	</div>
 	<div class="ets-input-group">
 	  <label><?php echo __( 'Server ID', 'pmpro-discord-add-on' ); ?> :</label>

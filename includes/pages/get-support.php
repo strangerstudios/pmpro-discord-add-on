@@ -7,6 +7,7 @@ if ( $currentUser ) {
 ?>
 <div class="contact-form ">
   <form accept="#" method="post">
+    
 	  <div class="ets-container">
 		<div class="top-logo-title">
 		  <img src="<?php echo esc_attr( ETS_PMPRO_DISCORD_URL . 'assets/images/ets-logo.png '); ?>" class="img-fluid company-logo" alt="">
@@ -69,6 +70,15 @@ if ( $currentUser ) {
 				  </div>
 				  <div class="contact-body mt-3">
 					<p>+91-9806724185</p>
+				  </div>
+				</div>
+        <div class="contact-details d-inline-block w-100">
+				  <div class="top-icon-title d-flex align-items-center w-100">
+					<i class="fab fa-whatsapp title-icon fa-lg fa-inverse" aria-hidden="true"></i>
+					<p><?php echo __( 'Discord', 'pmpro-discord-add-on' ); ?></p>
+				  </div>
+				  <div class="contact-body mt-3">
+					<p>expresstechceo#9284</p>
 				  </div>
 				</div>
 			  </div>

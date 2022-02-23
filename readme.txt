@@ -2,9 +2,9 @@
 Contributors: expresstechsoftware, strangerstudios
 Tags: Discord, Talk, Video Chat, Hang Out, Friends, Meberships, discord role management
 Requires at least: 4.7
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 7.0
-Stable tag: 1.1.0
+Stable tag: 1.1.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,8 @@ This plugin provides the following features:
 11) Send a Direct message to discord members when their membership is cancelled. (Only work when allow none member is set to YES and Direct Message advanced setting is set ENABLED)
 12) Send membership expiration warnings Direct Message when membership is about to expire (Default 7 days before)
 13) Short code [discord_connect_button] can be used on any page to display connect/disconnect button.
-
+14) Using the shortcode [discord_connect_button] on any page, anyone can join the website discord server by authentication via member discord account. New members will get `default` role if selected in the setting.
+15) Button styling feature under the plugin settings.
 
 [View all Screenshots](https://www.expresstechsoftwares.com/pmpro-official-discord-add-on/)
 

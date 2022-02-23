@@ -105,20 +105,20 @@
   overflow: scroll;
 }
 .pmpro-btn-connect{
-  background-color: #77A02E;
+  /*background-color: #77A02E;*/
 }
 .pmpro-btn-connect-to-bot{
   background-color: #FF0000;
 }
 .pmpro-btn-disconnect{
-  background-color:#FF0000;
+  /*background-color:#FF0000;*/
 }
 .pmpro-clrbtndiv{
-    max-width: 230px;
     display: flex;
 }
 .pmpro-clrbtndiv .form-group{
   display: flex;
+  align-items: center;
 }
 .pmpro-clrbtndiv .form-group .spinner{
   margin: 10px 10px 0;

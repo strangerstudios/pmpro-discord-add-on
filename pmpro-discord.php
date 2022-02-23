@@ -3,7 +3,7 @@
  * Plugin Name: Connect Paid Memberships Pro to Discord
  * Plugin URI:  https://www.expresstechsoftwares.com/step-by-step-documentation-guide-on-how-to-connect-pmpro-and-discord-server-using-discord-addon
  * Description: Connect your PaidMebershipPro site to your discord server, enable your members to be part of your community.
- * Version: 1.1.0
+ * Version: 1.1.3
  * Author: ExpressTech Software Solutions Pvt. Ltd., Strangers Studios
  * Author URI: https://www.expresstechsoftwares.com
  * Text Domain: pmpro-discord-add-on
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // create plugin version constant.
-define( 'ETS_PMPRO_VERSION', '1.1.0' );
+define( 'ETS_PMPRO_VERSION', '1.1.3' );
 
 // create plugin url constant.
 define( 'ETS_PMPRO_DISCORD_URL', plugin_dir_url( __FILE__ ) );
@@ -29,7 +29,7 @@ define( 'ETS_DISCORD_API_URL', 'https://discord.com/api/v6/' );
 define( 'ETS_DISCORD_BOT_PERMISSIONS', 8 );
 
 // discord api call scopes.
-define( 'ETS_DISCORD_OAUTH_SCOPES', 'identify email connections guilds guilds.join gdm.join rpc rpc.notifications.read rpc.voice.read rpc.voice.write rpc.activities.write bot webhook.incoming messages.read applications.builds.upload applications.builds.read applications.commands applications.store.update applications.entitlements activities.read activities.write relationships.read' );
+define( 'ETS_DISCORD_OAUTH_SCOPES', 'identify email connections guilds guilds.join gdm.join rpc rpc.notifications.read rpc.voice.read rpc.voice.write rpc.activities.write bot webhook.incoming applications.builds.upload applications.builds.read applications.commands applications.store.update applications.entitlements activities.read activities.write relationships.read' );
 
 // define group name for action scheduler actions.
 define( 'ETS_DISCORD_AS_GROUP_NAME', 'ets-pmpro-discord' );
@@ -94,6 +94,12 @@ class Ets_Pmpro_Add_Discord {
 		update_option( 'ets_pmpro_discord_log_api_response', false );
 		update_option( 'ets_pmpro_retry_failed_api', true );
 		update_option( 'ets_pmpro_discord_job_queue_concurrency', 1 );
+		update_option( 'ets_pmpro_member_kick_out', 0 );
+		update_option( 'ets_pmpro_discord_btn_color', '#77a02e' );
+    update_option( 'ets_pmpro_btn_disconnect_color', '#ff0000' );
+		update_option( 'ets_pmpro_discord_loggedout_btn_text', 'Connect To Discord' );
+		update_option( 'ets_pmpro_discord_loggedin_btn_text', 'Connect To Discord' );
+    update_option( 'ets_pmpro_disconnect_btn_text', 'Disconnect From Discord' );
 		update_option( 'ets_pmpro_discord_job_queue_batch_size', 7 );
 		update_option( 'ets_pmpro_allow_none_member', 'yes' );
 		update_option( 'ets_pmpro_retry_api_count', '5' );

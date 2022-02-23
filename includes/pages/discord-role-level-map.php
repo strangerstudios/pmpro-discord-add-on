@@ -4,7 +4,11 @@ $pmpro_levels        = pmpro_getAllLevels( true, true );
 $membership_level    = pmpro_getMembershipLevelForUser( $user_id );
 $default_role        = sanitize_text_field( trim( get_option( '_ets_pmpro_discord_default_role_id' ) ) );
 $allow_none_member_s = sanitize_text_field( trim( get_option( 'ets_pmpro_allow_none_member' ) ) );
+$current_screen = ets_pmpro_discord_get_current_screen_url();
 ?>
+<div class="notice notice-info ets-notice">
+  <p><i class='fas fa-info'></i> <?php echo __( 'Make sure the BOT role has high priority in the discord.com server than the roles it is supposed to manage.', 'pmpro-discord-add-on' ); ?></p>
+</div>
 <div class="notice notice-warning ets-notice">
   <p><i class='fas fa-info'></i> <?php echo __( 'Drag and Drop the Discord Roles over to the PMPRO Levels', 'pmpro-discord-add-on' ); ?></p>
 </div>
@@ -37,6 +41,7 @@ $allow_none_member_s = sanitize_text_field( trim( get_option( 'ets_pmpro_allow_n
 </div>
 <form method="post" action="<?php echo get_site_url().'/wp-admin/admin-post.php' ?>">
  <input type="hidden" name="action" value="pmpro_discord_save_role_mapping">
+ <input type="hidden" name="referrer" value="<?php echo $current_screen; ?>" />
   <table class="form-table" role="presentation">
 	<tbody>
 	  <tr>
