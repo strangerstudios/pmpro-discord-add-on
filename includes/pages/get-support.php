@@ -74,7 +74,7 @@ if ( $currentUser ) {
 				</div>
         <div class="contact-details d-inline-block w-100">
 				  <div class="top-icon-title d-flex align-items-center w-100">
-					<i class="fab fa-whatsapp title-icon fa-lg fa-inverse" aria-hidden="true"></i>
+					<i class="fab fa-discord title-icon fa-lg fa-inverse" aria-hidden="true"></i>
 					<p><?php echo __( 'Discord', 'pmpro-discord-add-on' ); ?></p>
 				  </div>
 				  <div class="contact-body mt-3">

@@ -546,6 +546,10 @@ class PMPro_Discord_API {
 		}
 		// when admin initiated bot connection
 		if ( isset( $_GET['action'] ) && $_GET['action'] == 'discord-connectToBot' ) {
+			if ( ! current_user_can( 'administrator' ) ) {
+				wp_send_json_error( 'You do not have sufficient rights', 403 );
+				exit();
+			}
 			$params                    = array(
 				'client_id'   => sanitize_text_field( trim( get_option( 'ets_pmpro_discord_client_id' ) ) ),
 				'permissions' => ETS_DISCORD_BOT_PERMISSIONS,
@@ -613,7 +617,7 @@ class PMPro_Discord_API {
 							wp_signon( $credentials, '' );
 							$discord_user_id = sanitize_text_field( trim( get_user_meta( $user_id, '_ets_pmpro_discord_user_id', true ) ) );
 							$this->add_discord_member_in_guild( $discord_user_id, $user_id, $access_token );
-							if($_COOKIE['ets_discord_page']){
+							if ( $_COOKIE['ets_discord_page'] ) {
 								wp_safe_redirect( urldecode_deep( $_COOKIE['ets_discord_page'] ) );
 								exit();
 							}
@@ -856,8 +860,36 @@ class PMPro_Discord_API {
 			if ( $member_kick_out == true ) {
 				$this->delete_member_from_guild( $user_id, false );
 			}
-			delete_user_meta( $user_id, '_ets_pmpro_discord_access_token' );
-      delete_user_meta( $user_id, '_ets_pmpro_discord_refresh_token' );
+			delete_user_meta( $user_id, '_ets_pmpro_discord_refresh_token' );
+			// GH#279
+			$default_role                   = sanitize_text_field( trim( get_option( '_ets_pmpro_discord_default_role_id' ) ) );
+			$_ets_pmpro_discord_role_id     = sanitize_text_field( trim( get_user_meta( $user_id, '_ets_pmpro_discord_role_id', true ) ) );
+			$ets_pmpor_discord_role_mapping = json_decode( get_option( 'ets_pmpor_discord_role_mapping' ), true );
+			$curr_level_id                  = sanitize_text_field( trim( ets_pmpro_discord_get_current_level_id( $user_id ) ) );
+			$previous_default_role          = get_user_meta( $user_id, '_ets_pmpro_discord_default_role_id', true );
+			$access_token                   = get_user_meta( $user_id, '_ets_pmpro_discord_access_token', true );
+			if ( ! empty( $access_token ) ) {
+				// delete already assigned role.
+				if ( isset( $_ets_pmpro_discord_role_id ) && $_ets_pmpro_discord_role_id != '' && $_ets_pmpro_discord_role_id != 'none' ) {
+					$this->delete_discord_role( $user_id, $_ets_pmpro_discord_role_id, true );
+					delete_user_meta( $user_id, '_ets_pmpro_discord_role_id', true );
+				}
+				// Assign role which is saved as default.
+				if ( $default_role != 'none' ) {
+					if ( isset( $previous_default_role ) && $previous_default_role != '' && $previous_default_role != 'none' ) {
+							$this->delete_discord_role( $user_id, $previous_default_role, $is_schedule );
+					}
+					delete_user_meta( $user_id, '_ets_pmpro_discord_default_role_id', true );
+					$this->put_discord_role_api( $user_id, $default_role, true );
+					update_user_meta( $user_id, '_ets_pmpro_discord_default_role_id', $default_role );
+				} elseif ( $default_role == 'none' ) {
+					if ( isset( $previous_default_role ) && $previous_default_role != '' && $previous_default_role != 'none' ) {
+						$this->delete_discord_role( $user_id, $previous_default_role, $is_schedule );
+					}
+					update_user_meta( $user_id, '_ets_pmpro_discord_default_role_id', $default_role );
+				}
+        delete_user_meta( $user_id, '_ets_pmpro_discord_access_token' );
+			}
 		}
 		$event_res = array(
 			'status'  => 1,
@@ -884,7 +916,7 @@ class PMPro_Discord_API {
 		}
 
 	}
-	
+
 	/**
 	 * Manage user roles api calls
 	 *

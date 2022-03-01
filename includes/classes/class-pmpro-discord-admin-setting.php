@@ -97,6 +97,21 @@ class Ets_Pmpro_Admin_Setting {
 		$loggedout_btn_text                       = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_loggedout_btn_text' ) ) );
 		$loggedin_btn_text              = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_loggedin_btn_text' ) ) );
 		$ets_pmpro_disconnect_btn_text  = sanitize_text_field( trim( get_option( 'ets_pmpro_disconnect_btn_text' ) ) );
+    if( $btn_color=='' || empty($btn_color) ){
+      $btn_color = '#77a02e';
+    }
+    if( $ets_pmpro_btn_disconnect_color=='' || empty($ets_pmpro_btn_disconnect_color) ){
+      $ets_pmpro_btn_disconnect_color = '#ff0000';
+    }
+    if( $loggedout_btn_text=='' || empty($loggedout_btn_text) ){
+      $loggedout_btn_text = 'Login With Discord';
+    }
+    if( $loggedin_btn_text=='' || empty($loggedin_btn_text) ){
+      $loggedin_btn_text = 'Connect To Discord';
+    }
+    if( $ets_pmpro_disconnect_btn_text=='' || empty($ets_pmpro_disconnect_btn_text) ){
+      $ets_pmpro_disconnect_btn_text = 'Disconnect From Discord';
+    }
 
 		if ( isset( $_GET['level'] ) && $_GET['level'] > 0 ) {
 			$curr_level_id = $_GET['level'];
@@ -121,8 +136,7 @@ class Ets_Pmpro_Admin_Setting {
 		if ( Check_saved_settings_status() ) {
 			if ( $access_token ) {
 				$pmpro_connecttodiscord_btn .= '<div><label class="ets-connection-lbl">' . esc_html__( 'Discord connection', 'pmpro-discord-add-on' ) . '</label>';
-				echo "<style>.pmpro-btn-disconnect{background-color: ".$ets_pmpro_btn_disconnect_color.";}</style>";
-				$pmpro_connecttodiscord_btn .= '<a href="#" class="ets-btn pmpro-btn-disconnect" id="pmpro-disconnect-discord" data-user-id="' . esc_attr( $user_id ) . '">' . esc_html( $ets_pmpro_disconnect_btn_text ) . '<i class="fab fa-discord"></i></a>';
+				$pmpro_connecttodiscord_btn .= '<style>.pmpro-btn-disconnect{background-color: ' . $ets_pmpro_btn_disconnect_color . ';}</style><a href="#" class="ets-btn pmpro-btn-disconnect" id="pmpro-disconnect-discord" data-user-id="' . esc_attr( $user_id ) . '">' . esc_html( $ets_pmpro_disconnect_btn_text ) . '<i class="fab fa-discord"></i></a>';
 				$pmpro_connecttodiscord_btn .= '<span class="ets-spinner"></span><p class="ets_assigned_role">';
 				if ( $mapped_role_name || $default_role_name ) {
 					$pmpro_connecttodiscord_btn .= esc_html__( 'Following Roles will be assigned to you in Discord: ', 'pmpro-discord-add-on' );
@@ -140,10 +154,8 @@ class Ets_Pmpro_Admin_Setting {
 			} elseif ( pmpro_hasMembershipLevel() || $allow_none_member == 'yes' ) {
 				$btn_text = $user_id ? $loggedin_btn_text : $loggedout_btn_text ;
 
-				echo "<style>.pmpro-btn-connect{background-color: ".$btn_color.";}</style>";
-
 				$current_url                 = ets_pmpro_discord_get_current_screen_url();
-				$pmpro_connecttodiscord_btn .= '<div><label class="ets-connection-lbl">' . esc_html__( 'Discord connection', 'pmpro-discord-add-on' ) . '</label>';
+				$pmpro_connecttodiscord_btn .= '<style>.pmpro-btn-connect{background-color: ' . $btn_color . ';}</style><div><label class="ets-connection-lbl">' . esc_html__( 'Discord connection', 'pmpro-discord-add-on' ) . '</label>';
 				$pmpro_connecttodiscord_btn .= '<a href="?action=discord-login&url=' . $current_url . '" class="pmpro-btn-connect ets-btn" >' . esc_html( $btn_text ) . '<i class="fab fa-discord"></i></a>';
 				$pmpro_connecttodiscord_btn .= '<p class="ets_assigned_role">';
 				if ( $mapped_role_name || $default_role_name ) {
