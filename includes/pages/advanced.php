@@ -16,6 +16,7 @@ $ets_pmpro_discord_send_welcome_dm            = sanitize_text_field( trim( get_o
 $ets_pmpro_discord_welcome_message            = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_welcome_message' ) ) );
 $ets_pmpro_discord_send_membership_cancel_dm  = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_send_membership_cancel_dm' ) ) );
 $ets_pmpro_discord_cancel_message             = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_cancel_message' ) ) );
+$ets_pmpro_discord_embed_messaging_feature    = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_embed_messaging_feature' ) ) );
 $current_screen = ets_pmpro_discord_get_current_screen_url();
 ?>
 <form method="post" action="<?php echo get_site_url().'/wp-admin/admin-post.php' ?>">
@@ -32,6 +33,19 @@ $current_screen = ets_pmpro_discord_get_current_screen_url();
     <small><?php echo __( ' Using the shortcode [discord_connect_button] on any page, anyone can join the website discord server by authentication via member discord account. New members will get default role if selected in the setting.', 'pmpro-discord-add-on' ); ?></small>
 		</fieldset></td>
 	  </tr>
+  <tr>
+		<th scope="row"><?php echo __( 'Use rich embed messaging feature?', 'pmpro-discord-add-on' ); ?></th>
+		<td> <fieldset>
+		<input name="ets_pmpro_discord_embed_messaging_feature" type="checkbox" id="ets_pmpro_discord_embed_messaging_feature" 
+		<?php
+		if ( $ets_pmpro_discord_embed_messaging_feature == true ) {
+			echo 'checked="checked"'; }
+		?>
+		 value="1">
+                <br/>
+                <small>Use [LINEBREAK] to split lines.</small>                
+		</fieldset></td>
+	  </tr>          
   <tr>
 		<th scope="row"><?php echo __( 'Send welcome message', 'pmpro-discord-add-on' ); ?></th>
 		<td> <fieldset>

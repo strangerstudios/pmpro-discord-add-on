@@ -1,3 +1,19 @@
+= 1.2.1 =
+- Add linebreak feature in DM messages.
+- Added color on roles under connect and disconnect button.
+
+= 1.2.0 =
+- Fixed the BUG GH#294, Fatal error Call to undefined function is_plugin_active()
+
+= 1.1.9 =
+- Added support for Discord API v10.
+
+= 1.1.8 =
+- Added support for Paid Memberships Pro - Cancel on Next Payment Date
+
+= 1.1.7 =
+- Member not getting added to guild, GH#282
+
 = 1.1.6 =
 - Fixed a BUG, where member do disconnect and can have role for infinite time
 

@@ -257,3 +257,66 @@ function ets_pmpro_discord_get_formatted_dm( $user_id, $level_id, $message ) {
 	return str_replace( $find, $replace, $message );
 }
 
+function ets_pmpro_disocrd_get_rich_embed_message ( $message ){
+    
+	$blog_logo_full = esc_url( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' )[0] );
+	$blog_logo_thumbnail =  esc_url( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'thumbnail' )[0] ); 
+	$SITE_URL  = get_bloginfo( 'url' );
+	$BLOG_NAME = get_bloginfo( 'name' );
+	$BLOG_DESCRIPTION = get_bloginfo( 'description' );
+    
+	$timestamp = date( "c", strtotime( "now" ) );
+	$convert_lines = preg_split( "/\[LINEBREAK\]/", $message );
+	$fields = [];
+	if ( is_array ( $convert_lines ) ){
+		for ( $i = 0; $i< count( $convert_lines ); $i++ ){
+			array_push( $fields, ["name" => ".", "value" => $convert_lines[$i], "inline" => false ] );
+		}
+	}
+	$rich_embed_message = json_encode( [
+		"content" => "",
+		"username" =>  $BLOG_NAME,
+		"avatar_url" => $blog_logo_thumbnail,
+		"tts" => false,
+		"embeds" => [
+			[
+				"title" => "",
+				"type" => "rich",
+				"description" => $BLOG_DESCRIPTION,
+				"url" => $SITE_URL,
+				"timestamp" => $timestamp,
+				"color" => hexdec( "3366ff" ),
+				"footer" => [
+					"text" => $BLOG_NAME,
+					"icon_url" => $blog_logo_thumbnail
+				],
+				"image" => [
+					"url" => $blog_logo_full
+				],
+				"thumbnail" => [
+					"url" => $blog_logo_thumbnail
+				],
+				"author" => [
+					"name" => $BLOG_NAME,
+					"url" => $SITE_URL
+				],
+				"fields" => $fields                            
+			]
+		]
+
+	], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+
+	return $rich_embed_message ; 
+}
+
+function ets_pmpro_discord_allowed_html( $html_message ) {
+	$allowed_html = array(
+		'span' => array(),
+		'i' => array(
+			'style' => array()
+		)
+	);
+
+	return wp_kses( $html_message, $allowed_html );
+}
+
